@@ -30,9 +30,6 @@ bool UUIChatPanel::AddObject(UObject* Object)
 	}
 
 	NewItem->OnEntryNewObject(Object);
-
-	ScrollBox->ScrollToEnd();
-
 	return true;
 }
 

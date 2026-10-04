@@ -60,12 +60,12 @@ void UOllamaManager::OnCheckOllamaAPI(
 	bool bResult;
 	if (bWasSuccessful && Response.IsValid())
 	{
-		// API 使用可
+		// API 可用
 		bResult = true;
 	}
 	else
 	{
-		// API 使用不可
+		// API 不可用
 		bResult = false;
 	}
 
@@ -162,7 +162,7 @@ void UOllamaManager::OnCheckModel(
 		*Response->GetContentAsString()
 	);
 
-	// JSON解読
+	// 解析 JSON
 	TSharedPtr<FJsonObject> JsonObject;
 	TSharedRef<TJsonReader<>> Reader =
 		TJsonReaderFactory<>::Create(Response->GetContentAsString());
@@ -176,7 +176,7 @@ void UOllamaManager::OnCheckModel(
 		return;
 	}
 
-	// 読み取り
+	//读取
 	bool bResult = false;
 	for (const TSharedPtr<FJsonValue>& ModelValue : *Models)
 	{

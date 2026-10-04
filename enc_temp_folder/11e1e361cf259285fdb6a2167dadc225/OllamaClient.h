@@ -22,6 +22,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "OllamaClient_SendMessage")
 	bool SendMessage(const FString& Message);
 
+	//UFUNCTION(BlueprintCallable, Category = "OllamaClient_SendMessage")
 	bool SendJsonMessages(TArray<TSharedPtr<FJsonValue>> Messages);
 
 	TFunction<void(const FString&)> ResponseReceivedCallback;

@@ -48,10 +48,13 @@ private:
 
 	UFUNCTION(BlueprintCallable, Category = "MainMenuWidget_RolePlayMessageOperator")
 	void SetRolePlayBaseInfomations(
+		//const FString& RolePlayRules, const FString& AIGuidelines,
 		const TArray<FString>& Must, const TArray<FString>& MustNot,
+		//const FString& Background, FDateTime CurrentTime,
 		const FString& Location, const FString& Situation, const FString& Atmosphere,
 		const FString& AIName, const TArray<FString>& AIPersonality, const TArray<FString>& AIBackground,
 		const FString& UserName, const TArray<FString>& UserPersonality, const TArray<FString>& UserBackground,
+		//const FString& PastConversationSummary
 		const FString& Summary, const TArray<FString>& ImportantEvents
 	);
 

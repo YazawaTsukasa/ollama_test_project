@@ -1,25 +1,27 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "RolePlayMessage\RolePlayMessageData\RolePlayBaseData.h"
-#include "RolePlayConversationContentData.generated.h"
+#include "RolePlayConversationContentData.h"
+#include "RolePlayMemoryData.generated.h"
 
 USTRUCT(BlueprintType)
-struct OLLAMATESTPROJECT_API FRolePlayConversationContentData :public FRolePlayBaseData
+struct OLLAMATESTPROJECT_API FRolePlayMemoryData :public FRolePlayBaseData
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool IsFromAIChar = true;
+	FString Summary;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Content;
+	TArray<FString> ImportantEvents;
 
 	TSharedPtr<FJsonObject> ToJson() const override
 	{
 		TSharedPtr<FJsonObject> JsonObject = MakeShared<FJsonObject>();
-		FString RoleName = IsFromAIChar ? TEXT("assistant") : TEXT("user");
-		JsonObject->SetStringField(TEXT("role"), RoleName);
-		JsonObject->SetStringField(TEXT("content"), Content);
+
+		JsonObject->SetStringField(TEXT("summary"), Summary);
+
+		JsonObject->SetArrayField(TEXT("important_events"), StringArrayToJson(ImportantEvents));
 
 		return JsonObject;
 	}

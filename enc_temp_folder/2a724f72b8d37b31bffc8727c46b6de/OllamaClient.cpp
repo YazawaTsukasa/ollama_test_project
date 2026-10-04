@@ -33,30 +33,31 @@ bool UOllamaClient::SendMessage(const FString& Message)
 	);
 
 	TSharedRef<IHttpRequest> Request = FHttpModule::Get().CreateRequest();
-	// OllamaのローカルAPIアドレス
+	// Ollama 本地 API 地址
 	Request->SetURL(URL);
-	// HTTPリクエストの方式
+	// HTTP 请求方式
 	Request->SetVerb(TEXT("POST"));
-	// リクエストBodyのデータがJSON形式であることをOllamaに伝える
+	// 告诉 Ollama：请求 Body 中的数据是 JSON
 	Request->SetHeader(
 		TEXT("Content-Type"),
 		TEXT("application/json")
 	);
-	// HTTPリクエストのBodyを設定
-	// 前の処理で生成したJSON文字列を設定する
+	// 设置 HTTP Body
+	// 也就是前面生成的 JSON 字符串
 	Request->SetContentAsString(RequestBody);
-	// リクエストのタイムアウト時間を設定
+	// 设置请求超时时间
 	Request->SetTimeout(TimeoutTime);
 	Request->SetActivityTimeout(ActivityTimeout);
-	// HTTPリクエスト完了時のコールバック関数を登録
-	// リクエストの送信が完了すると：
-	// OnResponseReceived()が自動的に呼び出される
+	// 注册 HTTP 请求完成时的回调函数
+	// 请求发送完成后：
+	// OnResponseReceived() 会被自动调用
 	Request->OnProcessRequestComplete().BindUObject(
 		this,
 		&UOllamaClient::OnResponseReceived
 	);
 	//UE_LOG(LogTemp, Log, TEXT("Request Ptr: %p"), &Request.Get());
-	//UE_LOG(LogTemp, Log, TEXT("Request Body: %s"), *RequestBody);
+	// 正式发送 HTTP 请求
+	UE_LOG(LogTemp, Log, TEXT("Request Body: %s"), *RequestBody);
 	bIsSendingMessage = true;
 	Request->ProcessRequest();
 	return true;
@@ -85,29 +86,30 @@ bool UOllamaClient::SendJsonMessages(TArray<TSharedPtr<FJsonValue>> Messages)
 	);
 
 	TSharedRef<IHttpRequest> Request = FHttpModule::Get().CreateRequest();
-	// OllamaのローカルAPIアドレス
+	// Ollama 本地 API 地址
 	Request->SetURL(URL);
-	// HTTPリクエストの方式
+	// HTTP 请求方式
 	Request->SetVerb(TEXT("POST"));
-	// リクエストBodyのデータがJSON形式であることをOllamaに伝える
+	// 告诉 Ollama：请求 Body 中的数据是 JSON
 	Request->SetHeader(
 		TEXT("Content-Type"),
 		TEXT("application/json")
 	);
-	// HTTPリクエストのBodyを設定
-	// 前の処理で生成したJSON文字列を設定する
+	// 设置 HTTP Body
+	// 也就是前面生成的 JSON 字符串
 	Request->SetContentAsString(RequestBody);
-	// リクエストのタイムアウト時間を設定
+	// 设置请求超时时间
 	Request->SetTimeout(TimeoutTime);
 	Request->SetActivityTimeout(ActivityTimeout);
-	// HTTPリクエスト完了時のコールバック関数を登録
-	// リクエストの送信が完了すると：
-	// OnResponseReceived()が自動的に呼び出される
+	// 注册 HTTP 请求完成时的回调函数
+	// 请求发送完成后：
+	// OnResponseReceived() 会被自动调用
 	Request->OnProcessRequestComplete().BindUObject(
 		this,
 		&UOllamaClient::OnResponseReceived
 	);
-	// リクエストを送信
+	//UE_LOG(LogTemp, Log, TEXT("Request Ptr: %p"), &Request.Get());
+	// 正式发送 HTTP 请求
 	UE_LOG(LogTemp, Log, TEXT("Request Body: %s"), *RequestBody);
 	bIsSendingMessage = true;
 	Request->ProcessRequest();
@@ -120,7 +122,7 @@ void UOllamaClient::OnResponseReceived(
 	bool bWasSuccessful)
 {
 	bIsSendingMessage = false;
-	// HTTPリクエストが成功したか、およびレスポンスが有効かどうかを確認する
+	// 检查 HTTP 请求是否成功，以及 Response 是否有效
 	UE_LOG(LogTemp, Log, TEXT("Response Request Ptr: %p"), Request.Get());
 	if (!bWasSuccessful || !Response.IsValid())
 	{
@@ -153,16 +155,16 @@ void UOllamaClient::OnResponseReceived(
 		return;
 	}
 
-	// Ollamaから返されたJSON文字列を取得
+	// 获取 Ollama 返回的 JSON 字符串
 	FString ResponseBody =
 		Response->GetContentAsString();
-	// Ollamaから返された内容をUE5のOutput Logに出力
+	// 将 Ollama 返回的内容输出到 UE5 Output Log
 	UE_LOG(LogTemp, Log, TEXT("Ollama Response: %s"), *ResponseBody);
 
-	// 解析したJSONを保存するための変数
+	// 用于保存解析后的 JSON
 	TSharedPtr<FJsonObject> JsonObject;
 
-	// FStringをJSONに変換
+	// 将 FString 转换成 JSON
 	TSharedRef<TJsonReader<>> Reader =
 		TJsonReaderFactory<>::Create(ResponseBody);
 	if (!FJsonSerializer::Deserialize(Reader, JsonObject) || !JsonObject.IsValid())
@@ -171,7 +173,7 @@ void UOllamaClient::OnResponseReceived(
 		return;
 	}
 
-	// "message"オブジェクトを取得
+	// 取得 "message" 对象
 	const TSharedPtr<FJsonObject>* MessageObject;
 	if (!JsonObject->TryGetObjectField(TEXT("message"), MessageObject))
 	{
@@ -179,7 +181,7 @@ void UOllamaClient::OnResponseReceived(
 		return;
 	}
 
-	// message内の"content"を取得
+	// 取得 message 里面的 "content"
 	FString Content;
 	if (!(*MessageObject)->TryGetStringField(TEXT("content"), Content))
 	{

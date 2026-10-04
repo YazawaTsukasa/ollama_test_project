@@ -70,26 +70,41 @@ bool URolePlayMessageOperator::PopConversationContentData(
 	return true;
 }
 
-bool URolePlayMessageOperator::SetSystemData(
-	const FString& RolePlayRules, const FString& AIGuidelines)
+//bool URolePlayMessageOperator::SetSystemData(
+//	const FString& RolePlayRules, const FString& AIGuidelines)
+//{
+//	if (RolePlayRules.IsEmpty() || AIGuidelines.IsEmpty()) return false;
+//	RolePlayMessageData.SystemData.RolePlayRules = RolePlayRules;
+//	RolePlayMessageData.SystemData.AIGuidelines = AIGuidelines;
+//	return true;
+//}
+bool URolePlayMessageOperator::SetRulesData(
+	const TArray<FString>& Must, const TArray<FString>& MustNot)
 {
-	if (RolePlayRules.IsEmpty() || AIGuidelines.IsEmpty()) return false;
-	RolePlayMessageData.SystemData.RolePlayRules = RolePlayRules;
-	RolePlayMessageData.SystemData.AIGuidelines = AIGuidelines;
+	RolePlayMessageData.SystemData.RulesData.Must = Must;
+	RolePlayMessageData.SystemData.RulesData.MustNot= MustNot;
 	return true;
 }
 
-bool URolePlayMessageOperator::SetSceneData(
-	const FString& Background, FDateTime CurrentTime)
+//bool URolePlayMessageOperator::SetSceneData(
+//	const FString& Background, FDateTime CurrentTime)
+//{
+//	if (Background.IsEmpty())return false;
+//	RolePlayMessageData.SystemData.SceneData.Background = Background;
+//	RolePlayMessageData.SystemData.SceneData.CurrentTime = CurrentTime;
+//	return true;
+//}
+bool URolePlayMessageOperator::SetSceneData(const FString& Location, const FString& Situation, const FString& Atmosphere)
 {
-	if (Background.IsEmpty())return false;
-	RolePlayMessageData.SystemData.SceneData.Background = Background;
-	RolePlayMessageData.SystemData.SceneData.CurrentTime = CurrentTime;
+	if (Location.IsEmpty()|| Situation.IsEmpty()||Atmosphere.IsEmpty())return false;
+	RolePlayMessageData.SystemData.SceneData.Location = Location;
+	RolePlayMessageData.SystemData.SceneData.Situation = Situation;
+	RolePlayMessageData.SystemData.SceneData.Atmosphere = Atmosphere;
 	return true;
 }
 
 bool URolePlayMessageOperator::SetUserCharData(
-	const FString& Name, const FString& Personality, const FString& Background)
+	const FString& Name, const TArray<FString>& Personality, const TArray<FString>& Background)
 {
 	if (Name.IsEmpty() || Personality.IsEmpty() || Background.IsEmpty())return false;
 	RolePlayMessageData.SystemData.UserCharData.Name = Name;
@@ -99,7 +114,7 @@ bool URolePlayMessageOperator::SetUserCharData(
 }
 
 bool URolePlayMessageOperator::SetAICharData(
-	const FString& Name, const FString& Personality, const FString& Background)
+	const FString& Name, const TArray<FString>& Personality, const TArray<FString>& Background)
 {
 	if (Name.IsEmpty() || Personality.IsEmpty() || Background.IsEmpty())return false;
 	RolePlayMessageData.SystemData.AICharData.Name = Name;
@@ -108,16 +123,29 @@ bool URolePlayMessageOperator::SetAICharData(
 	return true;
 }
 
-bool URolePlayMessageOperator::SetContextData(const FString& PastConversationSummary)
+//bool URolePlayMessageOperator::SetContextData(const FString& PastConversationSummary)
+//{
+//	if (PastConversationSummary.IsEmpty())return false;
+//	RolePlayMessageData.SystemData.ContextData.PastConversationSummary = PastConversationSummary;
+//	return true;
+//}
+bool URolePlayMessageOperator::SetMemoryData(
+	const FString& Summary, const TArray<FString>& ImportantEvents)
 {
-	if (PastConversationSummary.IsEmpty())return false;
-	RolePlayMessageData.SystemData.ContextData.PastConversationSummary = PastConversationSummary;
+	if (Summary.IsEmpty())return false;
+	RolePlayMessageData.SystemData.MemoryData.Summary = Summary;
+	RolePlayMessageData.SystemData.MemoryData.ImportantEvents = ImportantEvents;
 	return true;
 }
 
 FRolePlaySystemData URolePlayMessageOperator::GetSystemData() const
 {
 	return RolePlayMessageData.SystemData;
+}
+
+FRolePlayRulesData URolePlayMessageOperator::GetRulesData() const
+{
+	return RolePlayMessageData.SystemData.RulesData;
 }
 
 FRolePlaySceneData URolePlayMessageOperator::GetSceneData() const
@@ -135,10 +163,15 @@ FRolePlayCharData URolePlayMessageOperator::GetAICharData() const
 	return RolePlayMessageData.SystemData.AICharData;
 }
 
-FRolePlayContextData URolePlayMessageOperator::GetContextData() const
+//FRolePlayContextData URolePlayMessageOperator::GetContextData() const
+//{
+//	return RolePlayMessageData.SystemData.ContextData;
+//}
+FRolePlayMemoryData URolePlayMessageOperator::GetMemoryData() const
 {
-	return RolePlayMessageData.SystemData.ContextData;
+	return RolePlayMessageData.SystemData.MemoryData;
 }
+
 
 FString URolePlayMessageOperator::JsonToString(TSharedPtr<FJsonObject> JsonObject)
 {

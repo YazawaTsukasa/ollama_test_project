@@ -7,9 +7,11 @@
 
 #include "RolePlayMessage\RolePlayMessageData\RolePlayMessageData.h"
 #include "RolePlayMessage\RolePlayMessageData\RolePlaySystemData.h"
+#include "RolePlayMessage\RolePlayMessageData\RolePlayRulesData.h"
 #include "RolePlayMessage\RolePlayMessageData\RolePlaySceneData.h"
 #include "RolePlayMessage\RolePlayMessageData\RolePlayCharData.h"
-#include "RolePlayMessage\RolePlayMessageData\RolePlayContextData.h"
+#include "RolePlayMessage\RolePlayMessageData\RolePlayMemoryData.h"
+//#include "RolePlayMessage\RolePlayMessageData\RolePlayContextData.h"
 
 #include "RolePlayMessageOperator.generated.h"
 
@@ -36,18 +38,23 @@ public:
 		FRolePlayConversationContentData& Data, int32 Index = -1);
 
 	UFUNCTION(BlueprintCallable, Category = "RolePlayMessageOperator_Data")
-	bool SetSystemData(const FString& RolePlayRules, const FString& AIGuidelines);
+	//bool SetSystemData(const FString& RolePlayRules, const FString& AIGuidelines);
+	bool SetRulesData(const TArray<FString>& Must, const TArray<FString>& MustNot);
 	UFUNCTION(BlueprintCallable, Category = "RolePlayMessageOperator_Data")
-	bool SetSceneData(const FString& Background, FDateTime CurrentTime);
+	//bool SetSceneData(const FString& Background, FDateTime CurrentTime);
+	bool SetSceneData(const FString& Location, const FString& Situation, const FString& Atmosphere);
 	UFUNCTION(BlueprintCallable, Category = "RolePlayMessageOperator_Data")
-	bool SetUserCharData(const FString& Name, const FString& Personality, const FString& Background);
+	bool SetUserCharData(const FString& Name, const TArray<FString>& Personality, const TArray<FString>& Background);
 	UFUNCTION(BlueprintCallable, Category = "RolePlayMessageOperator_Data")
-	bool SetAICharData(const FString& Name, const FString& Personality, const FString& Background);
+	bool SetAICharData(const FString& Name, const TArray<FString>& Personality, const TArray<FString>& Background);
 	UFUNCTION(BlueprintCallable, Category = "RolePlayMessageOperator_Data")
-	bool SetContextData(const FString& PastConversationSummary);
+	//bool SetContextData(const FString& PastConversationSummary);
+	bool SetMemoryData(const FString& Summary, const TArray<FString>& ImportantEvents);
 
 	UFUNCTION(BlueprintCallable, Category = "RolePlayMessageOperator_Data")
 	FRolePlaySystemData GetSystemData() const;
+	UFUNCTION(BlueprintCallable, Category = "RolePlayMessageOperator_Data")
+	FRolePlayRulesData GetRulesData() const;
 	UFUNCTION(BlueprintCallable, Category = "RolePlayMessageOperator_Data")
 	FRolePlaySceneData GetSceneData() const;
 	UFUNCTION(BlueprintCallable, Category = "RolePlayMessageOperator_Data")
@@ -55,7 +62,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "RolePlayMessageOperator_Data")
 	FRolePlayCharData GetAICharData() const;
 	UFUNCTION(BlueprintCallable, Category = "RolePlayMessageOperator_Data")
-	FRolePlayContextData GetContextData() const;
+	//FRolePlayContextData GetContextData() const;
+	FRolePlayMemoryData GetMemoryData() const;
 
 private:
 	UPROPERTY()
