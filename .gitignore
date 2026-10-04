@@ -1,0 +1,30 @@
+# Unreal Engine
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+
+# Visual Studio
+.vs/
+*.sln
+*.slnx
+*.suo
+*.user
+*.userprefs
+
+# Rider
+.idea/
+*.sln.iml
+
+# Build
+Build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Visual Studio Code
+.vscode/
+
+# Unreal autosaves
+*.tmp
