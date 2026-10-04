@@ -1,47 +1,68 @@
 # UE5 Ollama Local LLM Roleplay
 
-A Unreal Engine 5 project that communicates with a locally running Large Language Model (LLM) through [Ollama](https://ollama.com/).
+A technical prototype for communicating with a locally running Large Language Model (LLM) from Unreal Engine 5 through [Ollama](https://ollama.com/).
 
-This project is an experimental implementation of **local AI-powered character roleplay in Unreal Engine 5**. UE5 sends structured roleplay data and conversation history to a local LLM through Ollama and receives the generated character response.
+The purpose of this project is to **experiment with the integration of Unreal Engine 5 and a local LLM, and to validate the basic implementation of an AI character roleplay system using an LLM**.
+
+UE5 sends structured data such as character settings, scene information, and conversation context to a local LLM through the Ollama API, then receives the generated character response back in UE5.
+
+## Project Status
+
+**Prototype / Technical Experiment**
+
+The following core technical aspects have been successfully verified:
+
+* HTTP communication between UE5 and Ollama
+* Local LLM inference
+* JSON-based data communication
+* AI character roleplay
+* Structured character and scene information
+* Conversation history and context management
+
+This project is intended for technical experimentation and research. It is not a completed commercial game or a finished end-user tool.
+
+---
 
 ## Features
 
-* Unreal Engine 5 + Ollama integration
+* Unreal Engine 5 and Ollama integration
 * Local LLM inference
 * HTTP communication between UE5 and Ollama
 * AI character roleplay
 * Structured character data
 * Character personality and background
-* Relationship and world information
-* Current scene information
+* Character relationship information
+* World and scene information
 * Conversation history
-* Roleplay memory
-* JSON-based communication
-* Support for different Ollama models
+* Roleplay context and memory
+* JSON-based data communication
+* Support for Ollama-compatible models
 
-## Current Model
+---
 
-The model currently used during development is:
+# Current Model
+
+The current development environment uses:
 
 ```text
 nemotron-mini:4b
 ```
 
-The model is provided and executed through Ollama.
+The project is not limited to this model.
 
-The project is not limited to this model. Other models available through Ollama can also be used by changing the model name in the request.
+Any model installed in Ollama can be used by changing the model name sent in the API request.
 
 ---
 
 # Requirements
 
-Before using this project, install:
+Before running the project, install:
 
 * Unreal Engine 5
 * Ollama
 * `nemotron-mini:4b`
 
-> **Important:** The LLM model is not included in this project. Ollama and the required model must be installed separately before running the project.
+> **Important:** The LLM itself is not included in this repository. Ollama and the required model must be installed separately.
 
 ---
 
@@ -55,45 +76,39 @@ Download Ollama from the official website:
 
 ### Windows
 
-Download and install the Windows version of Ollama.
+Install the Windows version of Ollama.
 
-After installation, verify that Ollama is available:
+After installation, verify it using PowerShell:
 
 ```powershell
 ollama --version
 ```
 
-If the installation was successful, Ollama should display its version information.
-
-Ollama provides a local API that normally runs at:
+The Ollama local API normally runs at:
 
 ```text
 http://localhost:11434
 ```
 
-The Unreal Engine project communicates with Ollama through this local API.
+The project communicates with Ollama through this local API.
 
 ---
 
 # 2. Install the LLM Model
 
-After installing Ollama, download the model used by this project.
-
-Run:
+Install the model used by the project:
 
 ```powershell
 ollama pull nemotron-mini:4b
 ```
 
-The model will be downloaded and installed locally.
-
-You can check the installed models with:
+Installed models can be checked with:
 
 ```powershell
 ollama list
 ```
 
-You should see:
+The following model should be listed:
 
 ```text
 nemotron-mini:4b
@@ -103,23 +118,21 @@ nemotron-mini:4b
 
 # 3. Test the Model
 
-Before running the Unreal Engine project, it is recommended to verify that the model works correctly.
-
-Run:
+Before launching the UE5 project, it is recommended to verify that the model works correctly.
 
 ```powershell
 ollama run nemotron-mini:4b
 ```
 
-Then enter a simple message:
+For example:
 
 ```text
 Hello
 ```
 
-If the model returns a response, the Ollama environment is ready.
+If the model returns a response, Ollama and the model are ready.
 
-To exit the interactive session:
+Exit with:
 
 ```text
 /bye
@@ -129,10 +142,10 @@ To exit the interactive session:
 
 # 4. Run the Unreal Engine Project
 
-After installing Ollama and the model:
+After preparing Ollama and the model:
 
 1. Start Ollama.
-2. Open the project in Unreal Engine 5.
+2. Open the project with Unreal Engine 5.
 3. Make sure the configured model name is `nemotron-mini:4b`.
 4. Build the project if necessary.
 5. Run the project.
@@ -141,7 +154,7 @@ The basic communication flow is:
 
 ```text
 ┌──────────────────────┐
-│    Unreal Engine 5  │
+│    Unreal Engine 5   │
 │                      │
 │   Roleplay System    │
 │   Character Data     │
@@ -158,7 +171,7 @@ The basic communication flow is:
            │
            ▼
 ┌──────────────────────┐
-│   nemotron-mini:4b   │
+│   Local LLM Model    │
 │                      │
 │  Roleplay Generation │
 └──────────┬───────────┘
@@ -166,7 +179,7 @@ The basic communication flow is:
            │ Generated Response
            ▼
 ┌──────────────────────┐
-│    Unreal Engine 5  │
+│    Unreal Engine 5   │
 └──────────────────────┘
 ```
 
@@ -174,7 +187,7 @@ The basic communication flow is:
 
 # 5. Model Configuration
 
-The model name is included in the Ollama request sent by Unreal Engine.
+The model name is included in the request sent from Unreal Engine to Ollama.
 
 For example:
 
@@ -185,9 +198,7 @@ JsonObject->SetStringField(
 );
 ```
 
-If another model has been installed through Ollama, the model name can be changed accordingly.
-
-For example:
+To use another model, change the model name:
 
 ```cpp
 JsonObject->SetStringField(
@@ -196,7 +207,7 @@ JsonObject->SetStringField(
 );
 ```
 
-You can check available models with:
+Installed models can be checked with:
 
 ```powershell
 ollama list
@@ -208,10 +219,10 @@ ollama list
 
 The project uses structured data to provide the LLM with the information required for roleplay.
 
-The roleplay context can contain:
+The roleplay context can include:
 
 * AI character information
-* User-controlled character information
+* User character information
 * Personality
 * Background
 * Character relationships
@@ -221,27 +232,23 @@ The roleplay context can contain:
 * Conversation history
 * Roleplay rules
 
-The project separates the **internal Unreal Engine data structures** from the **data structure sent to the LLM**.
+The project also separates UE5-side data structures from the data structures sent to the LLM.
 
-This allows the LLM prompt structure to be modified without requiring the internal game data structure to follow the same format.
+This allows the LLM-facing data format to be adjusted without directly modifying the game's internal data structures.
 
 ---
 
-# 7. Conversation and Memory
+# 7. Conversation History and Context
 
-The project maintains conversation history and provides previous conversation information to the LLM.
-
-The roleplay system can use:
+The project provides the LLM with relevant conversation context, including:
 
 * Recent conversation history
 * Previous conversation summaries
 * Character information
 * Current scene information
-* Relationship information
+* Character relationships
 
-This allows the LLM to maintain context during longer roleplay sessions.
-
-The project is also designed to experiment with conversation summarization when the conversation history becomes too large.
+The project also experiments with summarizing previous conversations when the conversation history becomes long, reducing the amount of context that needs to be sent to the model.
 
 ---
 
@@ -249,17 +256,15 @@ The project is also designed to experiment with conversation summarization when 
 
 The project is designed around local LLM inference.
 
-The general architecture is:
-
 ```text
 Unreal Engine 5
        │
-       │ HTTP
+       │ HTTP / JSON
        ▼
     Ollama
        │
        ▼
-Local LLM
+   Local LLM
        │
        │ Generated Text
        ▼
@@ -269,67 +274,71 @@ Local LLM
 Unreal Engine 5
 ```
 
-The default development model is:
+Current development model:
 
 ```text
 nemotron-mini:4b
 ```
 
-No external AI API is required for the local inference workflow.
+Because inference is performed locally, the project does not require an external cloud AI API.
 
 ---
 
 # 9. Hardware and Performance
 
-Local LLM performance depends on several factors:
+Local LLM performance depends on factors such as:
 
 * GPU VRAM
 * System RAM
 * CPU performance
 * Model size
-* Model quantization
+* Quantization
 * Context length
 
-Larger models generally require more system resources.
+Current development environment:
 
-The current development environment uses a local NVIDIA GPU and runs `nemotron-mini:4b` through Ollama.
+```text
+CPU: Intel Core i5-13600K
+GPU: NVIDIA GeForce RTX 4060 Ti 8GB
+RAM: 32GB
+```
 
-Different models may provide significantly different results, even when used with the same roleplay prompt.
+The project currently runs `nemotron-mini:4b` locally through Ollama.
+
+Actual inference speed and generation quality may vary depending on the hardware, model, and context size.
 
 ---
 
 # 10. Roleplay Limitations
 
-The quality of roleplay depends heavily on the selected LLM.
+Roleplay quality depends heavily on the selected LLM.
 
-A model may sometimes:
+Depending on the model and context length, issues such as the following may occur:
 
-* Confuse character identities
-* Speak or act for the user-controlled character
-* Ignore parts of the character settings
-* Forget previous events
-* Break character
-* Explain the roleplay instructions instead of responding naturally
+* Confusing character identities
+* Generating dialogue or actions for the user character
+* Ignoring character settings
+* Forgetting previous events
+* Losing character consistency
+* Responding with explanations instead of roleplay
 
-These behaviors are particularly noticeable with smaller models and long or complex contexts.
+These issues are particularly noticeable with smaller models or very long and complex contexts.
 
-The current project uses `nemotron-mini:4b` as the development model. Other Ollama-compatible models can be tested by changing the model name.
+Different Ollama-compatible models can be tested by changing the configured model name.
 
 ---
 
 # Troubleshooting
 
-### Ollama is not responding
+### Ollama does not respond
 
-Make sure Ollama is installed and running.
-
-Check:
+Check whether Ollama is installed:
 
 ```powershell
 ollama --version
 ```
 
-Then verify that the required model is installed:
+Check installed models:
 
 ```powershell
 ollama list
@@ -343,13 +352,13 @@ ollama run nemotron-mini:4b
 
 ### Model not found
 
-If the project reports that the model cannot be found, install it with:
+Install the model:
 
 ```powershell
 ollama pull nemotron-mini:4b
 ```
 
-Also make sure that the model name in the UE5 project exactly matches:
+Also make sure that the model name configured in the UE5 project exactly matches:
 
 ```text
 nemotron-mini:4b
@@ -359,10 +368,12 @@ nemotron-mini:4b
 
 # License
 
-Add the project's license information here.
+No license has currently been specified for this project.
+
+---
 
 # Acknowledgements
 
 * Unreal Engine — Epic Games
-* Ollama — Ollama
+* Ollama
 * NVIDIA Nemotron — NVIDIA
